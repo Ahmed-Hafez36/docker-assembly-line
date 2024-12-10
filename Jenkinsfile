@@ -1,11 +1,17 @@
 pipeline {
-  agent { docker "maven" }
+  agent any
 
   stages {
-    stage('maven') {
+    stage('Maven Check') {
       steps {
-        bat "mvn -version"
-        bat "java -version"
+        script {
+          // Ensure Docker runs the Maven image with appropriate volumes mapped
+          def mavenImage = docker.image('maven')
+          mavenImage.inside('-v ${pwd()}:/workspace -w /workspace') {
+            sh "mvn -version"
+            sh "java -version"
+          }
+        }
       }
     }
   }
