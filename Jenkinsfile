@@ -5,9 +5,9 @@ pipeline {
     stage('Maven Check') {
       steps {
         script {
-          // Ensure Docker runs the Maven image with appropriate volumes mapped
+          def workspacePath = pwd().replace('\\', '/').replace('C:', '/c')
           def mavenImage = docker.image('maven')
-          mavenImage.inside('-v ${pwd()}:/workspace -w /workspace') {
+          mavenImage.inside("-v ${workspacePath}:/workspace -w /workspace") {
             sh "mvn -version"
             sh "java -version"
           }
