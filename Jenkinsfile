@@ -8,8 +8,8 @@ pipeline {
           def workspacePath = pwd().replace('\\', '/').replace('C:', '/c')
           def mavenImage = docker.image('maven')
           mavenImage.inside("-v ${workspacePath}:/workspace -w /workspace") {
-            sh "mvn -version"
-            sh "java -version"
+            bat "mvn -version"
+            bat "java -version"
           }
         }
       }
